@@ -1,0 +1,48 @@
+/* src/components/Category/category.css */
+.categoryItem {
+  padding: 10px 15px;
+  margin: 8px 0;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border-left: 4px solid #007bff;
+}
+
+.categoryItem:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.categoryItem.categoryAtRisk {
+  border-left-color: #ffc107;
+  background: #fffbf0;
+}
+
+.categoryItem.categoryAtRisk:hover {
+  background: #fff8e1;
+}
+
+.categoryName {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+.categoryName.atRisk {
+  color: #856404;
+}
+
+.categoryCount {
+  margin-left: 8px;
+  color: #666;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.categoryWarning {
+  margin-left: 8px;
+  color: #ff9800;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: italic;
+}

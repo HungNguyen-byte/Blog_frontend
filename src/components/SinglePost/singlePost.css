@@ -1,0 +1,242 @@
+/* src/components/SinglePost/singlePost.css */
+
+.singlePost {
+    flex: 9;
+}
+
+.singlePostWrapper {
+    padding: 20px;
+    padding-right: 0;
+}
+
+.singlePostImg {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.singlePostTitle {
+    font-size: 28px;
+    font-family: 'Lora', serif;
+    margin: 10px;
+    text-align: center;
+}
+
+.singlePostEdit {
+    float: right;
+    font-size: 16px;
+}
+
+.singlePostIcon {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.singlePostIcon:first-child {
+    color: teal;
+}
+
+.singlePostIcon:last-child {
+    color: tomato;
+}
+
+.singlePostInfo {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-family: 'Varela Round', sans-serif;
+    color: #b39656;
+}
+
+.singlePostDesc {
+    font-size: 18px;
+    line-height: 25px;
+    color: #666;
+}
+
+.singlePostDesc::first-letter {
+    font-size: 30px;
+    margin-left: 20px;
+    font-weight: 600;
+}
+
+.singlePostCats {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.singlePostCat {
+    font-size: 12px;
+    color: #be9656;
+    background: #f8f8f8;
+    padding: 3px 8px;
+    border-radius: 10px;
+}
+
+.singlePostActions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.likeBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.likeBtn:hover:not(:disabled) {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.likeBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.likeBtn.liked {
+    background: #ffe0e0;
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+.likeBtn.liked i {
+    color: #ff6b6b;
+}
+
+.commentCount {
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.commentsSection {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+}
+
+.commentsTitle {
+    font-size: 20px;
+    font-family: 'Lora', serif;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.commentForm {
+    margin-bottom: 30px;
+}
+
+.commentInput {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Varela Round', sans-serif;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.commentInput:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.commentSubmitBtn {
+    padding: 10px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.commentSubmitBtn:hover:not(:disabled) {
+    background: #0056b3;
+}
+
+.commentSubmitBtn:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+
+.commentsList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.commentItem {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #007bff;
+}
+
+.commentHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.commentAuthor {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.commentDate {
+    font-size: 12px;
+    color: #999;
+}
+
+.deleteCommentBtn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.deleteCommentBtn:hover {
+    background: #ffe0e0;
+}
+
+.commentText {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.noComments {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 20px;
+}

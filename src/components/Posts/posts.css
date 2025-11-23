@@ -1,0 +1,17 @@
+/* src/components/Posts/posts.css */
+
+.posts {
+    flex: 9;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px;
+}
+
+.noPosts {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 2rem;
+  font-size: 1.1rem;
+}

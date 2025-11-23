@@ -1,0 +1,176 @@
+// src/Pages/Settings/Settings.jsx
+import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import API from "../../api";
+import { AuthContext } from "../../context/AuthContext";
+import { getImageUrl } from "../../constants";
+import "./settings.css";
+
+export default function Settings() {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [file, setFile] = useState(null);
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  /** Load initial profile */
+  useEffect(() => {
+    if (user) {
+      setUsername(user.username || "");
+      setEmail(user.email || "");
+      setFile(user.profilePic ? { preview: user.profilePic } : null);
+    }
+  }, [user]);
+
+  /** Upload image to backend (Cloudinary wrapper) */
+  const uploadImage = async () => {
+    if (!file || !(file instanceof File)) return user.profilePic;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await API.post("/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return res.data.url;
+  };
+
+  /** Build updated user object */
+  const buildUpdateBody = (profilePicUrl) => {
+    const body = { username, email };
+    if (password.trim()) body.password = password;
+    if (profilePicUrl !== user.profilePic) body.profilePic = profilePicUrl;
+    return body;
+  };
+
+  /** Handle update click */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    try {
+      // 1. Upload image if changed
+      const profilePicUrl = await uploadImage();
+
+      // 2. Build request body
+      const updatedBody = buildUpdateBody(profilePicUrl);
+
+      // 3. Send update API
+      const res = await API.put(`/users/${user.id}`, updatedBody);
+
+      // 4. Save new profile locally
+      const updatedUser = {
+        ...user,
+        username: res.data.username,
+        email: res.data.email,
+        profilePic: res.data.profilePic,
+      };
+
+      localStorage.setItem("blogUser", JSON.stringify(updatedUser));
+      setSuccess("Profile updated successfully!");
+      setTimeout(() => setSuccess(""), 3000);
+
+    } catch (err) {
+      setError(err.response?.data || "Update failed!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("Delete your account permanently?")) return;
+
+    try {
+      await API.delete(`/users/${user.id}`, {
+        data: { username: user.username },
+      });
+      logout();
+    } catch {
+      setError("Failed to delete account");
+    }
+  };
+
+  if (!user) {
+    return <div className="settings">Please log in to view settings.</div>;
+  }
+
+  return (
+    <div className="settings">
+      <div className="settingsWrapper">
+        <div className="settingsTitle">
+          <span className="settingsUpdateTitle">Update Your Account</span>
+          <span className="settingsDeleteTitle" onClick={handleDelete}>
+            Delete Account
+          </span>
+        </div>
+
+        {error && <p className="errorMsg">{error}</p>}
+        {success && <p className="successMsg">{success}</p>}
+
+        <form className="settingsForm" onSubmit={handleSubmit}>
+          <label>Profile Picture</label>
+          <div className="settingsPP">
+            <img
+              src={
+                file
+                  ? file instanceof File
+                    ? URL.createObjectURL(file)
+                    : file.preview
+                  : getImageUrl("default-avatar.png")
+              }
+              alt="Profile"
+            />
+            <label htmlFor="fileInput">
+              <i className="settingsPPIcon fa-solid fa-camera"></i>
+            </label>
+            <input
+              id="fileInput"
+              type="file"
+              style={{ display: "none" }}
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+          </div>
+
+          <label>Username</label>
+          <input
+            type="text"
+            className="settingsInput"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+
+          <label>Email</label>
+          <input
+            type="email"
+            className="settingsInput"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <label>Password (optional)</label>
+          <input
+            type="password"
+            className="settingsInput"
+            placeholder="New password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button className="settingsSubmit" type="submit" disabled={loading}>
+            {loading ? "Updating..." : "Update"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
