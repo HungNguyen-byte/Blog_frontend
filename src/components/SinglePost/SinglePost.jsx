@@ -61,7 +61,14 @@ export default function SinglePost({ post }) {
       await API.delete(`/posts/${post.postid}`);
       navigate("/");
     } catch (err) {
-      alert("Delete failed: " + (err.response?.data || err.message));
+      if (err.response?.status === 403) {
+        alert(
+          "Delete failed: Access denied. This usually happens after changing your username. " +
+          "Please log out and log back in to refresh your authentication token, then try again."
+        );
+      } else {
+        alert("Delete failed: " + (err.response?.data || err.message));
+      }
     }
   };
 

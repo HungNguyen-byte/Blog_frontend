@@ -18,6 +18,7 @@ export default function Settings() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [usernameChanged, setUsernameChanged] = useState(false);
 
   /** Load initial profile */
   useEffect(() => {
@@ -67,7 +68,10 @@ export default function Settings() {
       // 3. Send update API
       const res = await API.put(`/users/${user.id}`, updatedBody);
 
-      // 4. Update AuthContext and localStorage
+      // 4. Check if username changed
+      const usernameDidChange = res.data.username !== user.username;
+      
+      // 5. Update AuthContext and localStorage
       const updatedUser = {
         ...user,
         username: res.data.username,
@@ -76,8 +80,14 @@ export default function Settings() {
       };
 
       updateUser(updatedUser);
-      setSuccess("Profile updated successfully!");
-      setTimeout(() => setSuccess(""), 3000);
+      
+      if (usernameDidChange) {
+        setUsernameChanged(true);
+        setSuccess("Username updated! Please log out and log back in for changes to take full effect.");
+      } else {
+        setSuccess("Profile updated successfully!");
+        setTimeout(() => setSuccess(""), 3000);
+      }
 
     } catch (err) {
       setError(err.response?.data || "Update failed!");
@@ -115,6 +125,38 @@ export default function Settings() {
 
         {error && <p className="errorMsg">{error}</p>}
         {success && <p className="successMsg">{success}</p>}
+        {usernameChanged && (
+          <div className="settingsWarning" style={{
+            padding: "15px",
+            backgroundColor: "#fff3cd",
+            border: "1px solid #ffc107",
+            borderRadius: "5px",
+            marginBottom: "20px",
+            color: "#856404"
+          }}>
+            <p style={{ margin: "0 0 10px 0", fontWeight: "bold" }}>
+              ⚠️ Username Changed
+            </p>
+            <p style={{ margin: "0 0 10px 0" }}>
+              Your username has been updated. To ensure all features work correctly 
+              (including editing/deleting your posts), please log out and log back in.
+            </p>
+            <button
+              onClick={logout}
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#ffc107",
+                color: "#000",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "bold"
+              }}
+            >
+              Log Out Now
+            </button>
+          </div>
+        )}
 
         <form className="settingsForm" onSubmit={handleSubmit}>
           <label>Profile Picture</label>
