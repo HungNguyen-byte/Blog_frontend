@@ -8,7 +8,7 @@ export const AuthContext = createContext();
 const STORAGE_KEY = "blogUser";
 
 /** Normalize user object from backend */
-const normalizeUser = (backendUser, token) => ({
+const normalizeUser = (backendUser, token, existingUser = null) => ({
   id: backendUser.id || backendUser.userid || backendUser._id,
   username: backendUser.username,
   email: backendUser.email,
@@ -19,6 +19,8 @@ const normalizeUser = (backendUser, token) => ({
     (backendUser.role === "admin" ? true : undefined) ?? 
     false,
   token,
+  // Preserve originalUsername for ownership checks (posts may have old username)
+  originalUsername: existingUser?.originalUsername || backendUser.username,
 });
 
 export const AuthProvider = ({ children }) => {
@@ -32,7 +34,8 @@ export const AuthProvider = ({ children }) => {
       if (stored) {
         const parsed = JSON.parse(stored);
         // Normalize the stored user to ensure isAdmin is set correctly
-        const normalized = normalizeUser(parsed, parsed.token);
+        // Preserve originalUsername if it exists, otherwise use current username
+        const normalized = normalizeUser(parsed, parsed.token, parsed);
         console.log("[AuthContext] User loaded from localStorage:", {
           before: { isAdmin: parsed.isAdmin, isadmin: parsed.isadmin, role: parsed.role },
           after: { isAdmin: normalized.isAdmin, username: normalized.username }
@@ -102,6 +105,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /** Update user (for settings) */
+  const updateUser = (updatedUserData) => {
+    const updatedUser = {
+      ...user,
+      ...updatedUserData,
+      // Preserve originalUsername for ownership checks
+      originalUsername: user?.originalUsername || user?.username,
+    };
+    saveUser(updatedUser);
+  };
+
   /** Logout */
   const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
@@ -110,7 +124,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

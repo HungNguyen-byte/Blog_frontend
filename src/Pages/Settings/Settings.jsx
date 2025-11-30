@@ -7,7 +7,7 @@ import { getImageUrl } from "../../constants";
 import "./settings.css";
 
 export default function Settings() {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, updateUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -67,7 +67,7 @@ export default function Settings() {
       // 3. Send update API
       const res = await API.put(`/users/${user.id}`, updatedBody);
 
-      // 4. Save new profile locally
+      // 4. Update AuthContext and localStorage
       const updatedUser = {
         ...user,
         username: res.data.username,
@@ -75,7 +75,7 @@ export default function Settings() {
         profilePic: res.data.profilePic,
       };
 
-      localStorage.setItem("blogUser", JSON.stringify(updatedUser));
+      updateUser(updatedUser);
       setSuccess("Profile updated successfully!");
       setTimeout(() => setSuccess(""), 3000);
 

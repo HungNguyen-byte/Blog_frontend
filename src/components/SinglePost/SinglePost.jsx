@@ -43,9 +43,16 @@ export default function SinglePost({ post }) {
 
   if (!post) return <div className="singlePost">Loading...</div>;
 
-  // Check ownership by username (matches backend PostService logic)
-  // Note: If username changes, old posts won't be editable until backend is updated to use userid
-  const isOwner = user && user.username === post.username;
+  // Check ownership by username
+  // Use originalUsername to handle cases where user changed username but posts still have old username
+  // Backend checks ownership via JWT token username, which may still be old until logout
+  const isOwner = user && (
+    user.username === post.username || 
+    user.originalUsername === post.username
+  );
+  
+  // Display current username if user is owner, otherwise show post's stored username
+  const displayUsername = isOwner ? user.username : post.username;
 
   const handleDelete = async () => {
     if (!window.confirm("Are you sure?")) return;
@@ -174,7 +181,7 @@ export default function SinglePost({ post }) {
 
         <div className="singlePostInfo">
           <span className="singlePostAuthor">
-            Author: <b>{post.username}</b>
+            Author: <b>{displayUsername}</b>
           </span>
           <span className="singlePostDate">
             {new Date(post.createdAt).toDateString()}
