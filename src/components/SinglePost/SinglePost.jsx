@@ -7,13 +7,14 @@ import { getImageUrl } from "../../constants";
 import "./singlePost.css";
 
 export default function SinglePost({ post }) {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post?.likeCount || 0);
+  const [showAuthWarning, setShowAuthWarning] = useState(false);
 
   const fetchComments = useCallback(async () => {
     if (!post?.postid) return;
@@ -62,13 +63,20 @@ export default function SinglePost({ post }) {
       navigate("/");
     } catch (err) {
       if (err.response?.status === 403) {
-        alert(
-          "Delete failed: Access denied. This usually happens after changing your username. " +
-          "Please log out and log back in to refresh your authentication token, then try again."
-        );
+        setShowAuthWarning(true);
       } else {
         alert("Delete failed: " + (err.response?.data || err.message));
       }
+    }
+  };
+
+  const handleEditClick = async (e) => {
+    // Check if we should warn about potential auth issue
+    // This is a proactive check - the actual error will happen on Write page
+    if (isOwner && user?.originalUsername && user.originalUsername !== user.username) {
+      // User changed username but hasn't logged out yet
+      // Show warning but still allow navigation
+      setShowAuthWarning(true);
     }
   };
 
@@ -156,6 +164,56 @@ export default function SinglePost({ post }) {
   return (
     <div className="singlePost">
       <div className="singlePostWrapper">
+        {showAuthWarning && (
+          <div style={{
+            padding: "15px",
+            backgroundColor: "#fff3cd",
+            border: "1px solid #ffc107",
+            borderRadius: "5px",
+            marginBottom: "20px",
+            color: "#856404"
+          }}>
+            <p style={{ margin: "0 0 10px 0", fontWeight: "bold" }}>
+              ⚠️ Authentication Issue
+            </p>
+            <p style={{ margin: "0 0 10px 0" }}>
+              Access denied. This usually happens after changing your username. 
+              Please log out and log back in to refresh your authentication token, then try again.
+            </p>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button
+                onClick={() => {
+                  logout();
+                  navigate("/login");
+                }}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#ffc107",
+                  color: "#000",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontWeight: "bold"
+                }}
+              >
+                Log Out Now
+              </button>
+              <button
+                onClick={() => setShowAuthWarning(false)}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "transparent",
+                  color: "#856404",
+                  border: "1px solid #ffc107",
+                  borderRadius: "4px",
+                  cursor: "pointer"
+                }}
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
 
         {post.photo && (
           <img
@@ -173,6 +231,7 @@ export default function SinglePost({ post }) {
                 to={`/write?edit=${post.postid}`}
                 state={{ post }}
                 className="link"
+                onClick={handleEditClick}
               >
                 <i className="singlePostIcon fa-solid fa-pen-to-square"></i>
               </Link>
