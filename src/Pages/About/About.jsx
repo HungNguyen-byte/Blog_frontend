@@ -21,8 +21,37 @@ export default function About() {
 
       try {
         setLoading(true);
-        const res = await API.get(`/posts?user=${user.username}`);
-        setPosts(res.data);
+        setError("");
+        
+        // Fetch posts by both originalUsername (for old posts) and current username (for new posts)
+        // This handles cases where user changed their username
+        const usernamesToQuery = [
+          user.originalUsername || user.username, // Old posts
+          user.username // New posts (if different from original)
+        ].filter((u, index, arr) => arr.indexOf(u) === index); // Remove duplicates
+        
+        // Fetch posts for each username and combine results
+        const allPostsPromises = usernamesToQuery.map(username => 
+          API.get(`/posts?user=${username}`).then(res => res.data)
+        );
+        
+        const allPostsArrays = await Promise.all(allPostsPromises);
+        // Flatten and deduplicate by postid
+        const postsMap = new Map();
+        allPostsArrays.flat().forEach(post => {
+          if (post.postid && !postsMap.has(post.postid)) {
+            postsMap.set(post.postid, post);
+          }
+        });
+        
+        // Sort by creation date (newest first)
+        const sortedPosts = Array.from(postsMap.values()).sort((a, b) => {
+          const dateA = new Date(a.createdAt || 0);
+          const dateB = new Date(b.createdAt || 0);
+          return dateB - dateA;
+        });
+        
+        setPosts(sortedPosts);
       } catch (err) {
         setError("Failed to load your posts.");
         console.error(err);
