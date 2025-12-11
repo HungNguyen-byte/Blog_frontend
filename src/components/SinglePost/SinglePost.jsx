@@ -48,6 +48,9 @@ export default function SinglePost({ post }) {
   // Use originalUsername to handle cases where user changed username but posts still have old username
   // Backend checks ownership via JWT token username, which may still be old until logout
   const isOwner = user && (
+    // Prefer stable ownerId from backend
+    (post.ownerId && user.id === post.ownerId) ||
+    // Fallback to usernames for legacy posts
     user.username === post.username || 
     user.originalUsername === post.username
   );
