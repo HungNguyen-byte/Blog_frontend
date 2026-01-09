@@ -4,18 +4,29 @@ import React, {useState, useEffect, useRef} from "react";
 import API from "../../api"
 import './searchBar.css';
 
-export default function SearchBar ({ setResults }) {
+export default function SearchBar ({ setResults, selectedCategory = "" }) {
     const [query, setQuery] = useState("");
     const debounceRef = useRef(null);
 
-    const fetchPosts = async (searchQuery) => {
-        if (!searchQuery.trim()) {
+    const fetchPosts = async (searchQuery, category) => {
+        const params = new URLSearchParams();
+        
+        if (searchQuery && searchQuery.trim()) {
+            params.set("q", searchQuery.trim());
+        }
+        
+        if (category && category.trim()) {
+            params.set("cat", category.trim());
+        }
+
+        // If no search query and no category, return empty results
+        if (params.toString() === "") {
             setResults([]);
             return;
         }
 
         try {
-            const res = await API.get(`/posts?q=${searchQuery}`);
+            const res = await API.get(`/posts?${params.toString()}`);
             setResults(res.data);
         } catch (error) {
             console.error("Error fetching search results:", error);
@@ -27,11 +38,11 @@ export default function SearchBar ({ setResults }) {
         if (debounceRef.current) clearTimeout(debounceRef.current);
 
         debounceRef.current = setTimeout(() => {
-            fetchPosts(query);
+            fetchPosts(query, selectedCategory);
         }, 300);
 
         return () => clearTimeout(debounceRef.current);
-    }, [query]);
+    }, [query, selectedCategory]);
 
 
     const handleSearch = (e) => {
