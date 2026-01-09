@@ -13,6 +13,9 @@ export default function About() {
   const [error, setError] = useState("");
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [bio, setBio] = useState(user?.bio || "");
+  const [bioLoading, setBioLoading] = useState(false);
+  const [bioError, setBioError] = useState("");
+  const [bioSuccess, setBioSuccess] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -71,14 +74,38 @@ export default function About() {
     fetchUserPosts();
   }, [user]);
 
-  const handleSaveBio = () => {
-    updateUser({ bio });
-    setIsEditingBio(false);
+  const handleSaveBio = async () => {
+    setBioError("");
+    setBioSuccess("");
+    setBioLoading(true);
+
+    try {
+      // Save bio to backend
+      const res = await API.put(`/users/${user.id}`, { bio });
+      
+      // Update local user state with the saved bio
+      const updatedUser = {
+        ...user,
+        bio: res.data.bio || bio,
+      };
+      updateUser(updatedUser);
+      
+      setBioSuccess("Bio updated successfully!");
+      setIsEditingBio(false);
+      setTimeout(() => setBioSuccess(""), 3000);
+    } catch (err) {
+      setBioError(err.response?.data || "Failed to save bio");
+      console.error(err);
+    } finally {
+      setBioLoading(false);
+    }
   };
 
   const handleCancelEdit = () => {
     setBio(user?.bio || "");
     setIsEditingBio(false);
+    setBioError("");
+    setBioSuccess("");
   };
 
   if (!user) {
@@ -110,23 +137,28 @@ export default function About() {
             />
             {isEditingBio ? (
               <div className="aboutBioEdit">
+                {bioError && <p className="aboutBioError">{bioError}</p>}
+                {bioSuccess && <p className="aboutBioSuccess">{bioSuccess}</p>}
                 <textarea
                   className="aboutBioTextarea"
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   placeholder="Write a description about yourself..."
                   rows={4}
+                  disabled={bioLoading}
                 />
                 <div className="aboutBioActions">
                   <button
                     className="aboutBioSave"
                     onClick={handleSaveBio}
+                    disabled={bioLoading}
                   >
-                    Save
+                    {bioLoading ? "Saving..." : "Save"}
                   </button>
                   <button
                     className="aboutBioCancel"
                     onClick={handleCancelEdit}
+                    disabled={bioLoading}
                   >
                     Cancel
                   </button>
