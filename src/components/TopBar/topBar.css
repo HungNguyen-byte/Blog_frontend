@@ -61,3 +61,91 @@
 .topSearchIcon:hover {
     color: #be9656;
 }
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .topListItem {
+        margin-right: 15px;
+        font-size: 16px;
+    }
+    
+    .topIcon {
+        font-size: 18px;
+        margin-right: 8px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .top {
+        height: auto;
+        min-height: 50px;
+        padding: 10px 0;
+    }
+    
+    .topLeft {
+        flex: 2;
+    }
+    
+    .topCenter {
+        flex: 8;
+    }
+    
+    .topRight {
+        flex: 2;
+    }
+    
+    .topIcon {
+        font-size: 16px;
+        margin-right: 8px;
+    }
+    
+    .topList {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .topListItem {
+        margin-right: 10px;
+        font-size: 14px;
+    }
+    
+    .topImg {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .topSearchIcon {
+        font-size: 16px;
+    }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+    .topLeft {
+        display: none;
+    }
+    
+    .topCenter {
+        flex: 8;
+    }
+    
+    .topRight {
+        flex: 4;
+    }
+    
+    .topListItem {
+        margin-right: 8px;
+        font-size: 12px;
+    }
+    
+    .topImg {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .topSearchIcon {
+        font-size: 14px;
+        margin-left: 5px;
+    }
+}

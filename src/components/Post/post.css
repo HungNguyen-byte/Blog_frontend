@@ -3,6 +3,8 @@
 .post {
     width: 385px;
     margin: 0px 25px 40px 25px;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .postImg {
@@ -99,4 +101,73 @@
 .postCat:hover {
     background: #be9656;
     color: white;
+}
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .post {
+        width: calc(50% - 30px);
+        min-width: 300px;
+        margin: 0px 15px 30px 15px;
+    }
+    
+    .postImg {
+        height: 240px;
+    }
+    
+    .postTitle {
+        font-size: 22px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .post {
+        width: calc(100% - 20px);
+        max-width: 500px;
+        margin: 0px 10px 30px 10px;
+    }
+    
+    .postImg {
+        height: 220px;
+    }
+    
+    .postTitle {
+        font-size: 20px;
+    }
+    
+    .postDesc {
+        font-size: 13px;
+    }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+    .post {
+        width: calc(100% - 10px);
+        margin: 0px 5px 25px 5px;
+    }
+    
+    .postImg {
+        height: 200px;
+    }
+    
+    .postTitle {
+        font-size: 18px;
+    }
+    
+    .postMeta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .postStats {
+        gap: 10px;
+    }
+    
+    .postDesc {
+        font-size: 12px;
+        -webkit-line-clamp: 4;
+    }
 }

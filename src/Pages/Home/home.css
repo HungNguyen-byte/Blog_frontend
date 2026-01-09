@@ -3,3 +3,18 @@
 .home {
     display: flex;
 }
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .home {
+        flex-direction: column;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .home {
+        flex-direction: column;
+        margin: 0;
+    }
+}

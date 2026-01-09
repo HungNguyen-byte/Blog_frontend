@@ -5,6 +5,7 @@
     display: flex;
     flex-wrap: wrap;
     margin: 20px;
+    justify-content: center;
 }
 
 .noPosts {
@@ -14,4 +15,38 @@
   font-style: italic;
   padding: 2rem;
   font-size: 1.1rem;
+}
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .posts {
+        margin: 15px;
+        justify-content: space-around;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .posts {
+        flex: 1;
+        margin: 10px;
+        justify-content: center;
+    }
+    
+    .noPosts {
+        padding: 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+    .posts {
+        margin: 5px;
+    }
+    
+    .noPosts {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
 }

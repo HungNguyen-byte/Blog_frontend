@@ -3,3 +3,17 @@
 .single {
     display: flex;
 }
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .single {
+        flex-direction: column;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .single {
+        flex-direction: column;
+    }
+}

@@ -48,10 +48,11 @@
 .categoryFilter {
     width: 100%;
     max-width: 600px;
-    padding: 12px 20px;
-    font-size: 1rem;
+    height: 3rem;
+    padding: 0 50px 0 20px;
+    font-size: 1.1rem;
     font-family: "Lato", sans-serif;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 50px;
     background-color: white;
     color: #333;
@@ -62,31 +63,96 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23be9656' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 20px center;
-    padding-right: 50px;
 }
 
 .categoryFilter:hover {
     box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
 .categoryFilter:focus {
     outline: none;
-    border-color: #be9656;
-    box-shadow: 0px 6px 20px rgba(190, 150, 86, 0.2);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
-@media (max-width: 786px) {
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .search {
+        padding: 15px;
+    }
+    
     .searchContainer {
-        width: 90%;
+        max-width: 700px;
     }
+    
     .searchTitle {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .search {
+        padding: 15px 10px;
+    }
+    
+    .searchContainer {
+        width: 95%;
+        max-width: 100%;
+    }
+    
+    .searchTitle {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
     .searchFilters {
         gap: 12px;
+        margin-bottom: 20px;
     }
-    .categoryFilter {
+    
+    .searchBar {
+        padding: 10px 12px;
         font-size: 0.95rem;
-        padding: 10px 45px 10px 15px;
+    }
+    
+    .categoryFilter {
+        font-size: 1rem;
+        height: 2.75rem;
+        padding: 0 45px 0 15px;
+    }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+    .search {
+        padding: 10px 5px;
+    }
+    
+    .searchContainer {
+        width: 100%;
+        padding: 0 5px;
+    }
+    
+    .searchTitle {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .searchFilters {
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .searchBar {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+    
+    .categoryFilter {
+        font-size: 0.9rem;
+        height: 2.5rem;
+        padding: 0 40px 0 12px;
     }
 }

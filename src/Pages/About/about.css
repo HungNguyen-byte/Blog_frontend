@@ -194,8 +194,35 @@
   color: #999;
 }
 
-/* Responsive */
+/* Tablet styles */
+@media (max-width: 1024px) {
+  .about {
+    padding: 15px;
+  }
+  
+  .aboutSection {
+    padding: 25px;
+  }
+  
+  .aboutTitle {
+    font-size: 32px;
+  }
+  
+  .aboutSubtitle {
+    font-size: 22px;
+  }
+}
+
+/* Mobile styles */
 @media (max-width: 768px) {
+  .about {
+    padding: 10px;
+  }
+  
+  .aboutWrapper {
+    gap: 30px;
+  }
+  
   .aboutSection {
     padding: 20px;
   }
@@ -203,9 +230,62 @@
   .aboutTitle {
     font-size: 28px;
   }
+  
+  .aboutSubtitle {
+    font-size: 20px;
+  }
 
   .aboutImg {
     width: 100px;
     height: 100px;
+  }
+  
+  .aboutBio {
+    font-size: 15px;
+  }
+  
+  .aboutBioActions {
+    flex-direction: column;
+  }
+  
+  .aboutBioSave,
+  .aboutBioCancel {
+    width: 100%;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .about {
+    padding: 5px;
+  }
+  
+  .aboutWrapper {
+    gap: 20px;
+  }
+  
+  .aboutSection {
+    padding: 15px;
+  }
+  
+  .aboutTitle {
+    font-size: 24px;
+  }
+  
+  .aboutSubtitle {
+    font-size: 18px;
+  }
+  
+  .aboutImg {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .aboutBio {
+    font-size: 14px;
+  }
+  
+  .aboutBioTextarea {
+    font-size: 14px;
   }
 }

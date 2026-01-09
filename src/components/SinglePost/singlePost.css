@@ -240,3 +240,139 @@
     font-style: italic;
     padding: 20px;
 }
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .singlePost {
+        flex: 1;
+    }
+    
+    .singlePostWrapper {
+        padding: 15px;
+        padding-right: 15px;
+    }
+    
+    .singlePostImg {
+        height: 250px;
+    }
+    
+    .singlePostTitle {
+        font-size: 24px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .singlePost {
+        flex: 1;
+    }
+    
+    .singlePostWrapper {
+        padding: 10px;
+    }
+    
+    .singlePostImg {
+        height: 200px;
+    }
+    
+    .singlePostTitle {
+        font-size: 20px;
+        margin: 8px;
+    }
+    
+    .singlePostInfo {
+        flex-direction: column;
+        gap: 8px;
+        font-size: 14px;
+    }
+    
+    .singlePostDesc {
+        font-size: 16px;
+        line-height: 22px;
+    }
+    
+    .singlePostDesc::first-letter {
+        font-size: 24px;
+        margin-left: 10px;
+    }
+    
+    .singlePostActions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .likeBtn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .commentsTitle {
+        font-size: 18px;
+    }
+    
+    .commentItem {
+        padding: 12px;
+    }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+    .singlePostWrapper {
+        padding: 8px;
+    }
+    
+    .singlePostImg {
+        height: 180px;
+    }
+    
+    .singlePostTitle {
+        font-size: 18px;
+        margin: 5px;
+    }
+    
+    .singlePostEdit {
+        float: none;
+        display: block;
+        margin-top: 10px;
+    }
+    
+    .singlePostInfo {
+        font-size: 13px;
+    }
+    
+    .singlePostDesc {
+        font-size: 14px;
+        line-height: 20px;
+    }
+    
+    .singlePostDesc::first-letter {
+        font-size: 20px;
+    }
+    
+    .commentsTitle {
+        font-size: 16px;
+    }
+    
+    .commentInput {
+        font-size: 13px;
+        padding: 10px;
+    }
+    
+    .commentSubmitBtn {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    .commentItem {
+        padding: 10px;
+    }
+    
+    .commentAuthor {
+        font-size: 13px;
+    }
+    
+    .commentText {
+        font-size: 13px;
+    }
+}
