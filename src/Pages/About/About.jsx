@@ -7,10 +7,18 @@ import { getImageUrl } from "../../constants";
 import "./about.css";
 
 export default function About() {
-  const { user } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isEditingBio, setIsEditingBio] = useState(false);
+  const [bio, setBio] = useState(user?.bio || "");
+
+  useEffect(() => {
+    if (user) {
+      setBio(user.bio || "");
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchUserPosts = async () => {
@@ -63,6 +71,16 @@ export default function About() {
     fetchUserPosts();
   }, [user]);
 
+  const handleSaveBio = () => {
+    updateUser({ bio });
+    setIsEditingBio(false);
+  };
+
+  const handleCancelEdit = () => {
+    setBio(user?.bio || "");
+    setIsEditingBio(false);
+  };
+
   if (!user) {
     return (
       <div className="about">
@@ -90,11 +108,51 @@ export default function About() {
               alt={user.username}
               className="aboutImg"
             />
-            <p className="aboutBio">
-              Hi, I'm <strong>{user.username}</strong>. I love writing about life,
-              technology, and everything in between. This is my personal blog where
-              I share my thoughts and experiences.
-            </p>
+            {isEditingBio ? (
+              <div className="aboutBioEdit">
+                <textarea
+                  className="aboutBioTextarea"
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  placeholder="Write a description about yourself..."
+                  rows={4}
+                />
+                <div className="aboutBioActions">
+                  <button
+                    className="aboutBioSave"
+                    onClick={handleSaveBio}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="aboutBioCancel"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="aboutBio">
+                <p>
+                  {bio.trim() ? (
+                    <>
+                      Hi, I'm <strong>{user.username}</strong>. {bio}
+                    </>
+                  ) : (
+                    <>
+                      Hi, I'm <strong>{user.username}</strong>. Click "Edit" to add a description about yourself.
+                    </>
+                  )}
+                </p>
+                <button
+                  className="aboutBioEditBtn"
+                  onClick={() => setIsEditingBio(true)}
+                >
+                  Edit
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

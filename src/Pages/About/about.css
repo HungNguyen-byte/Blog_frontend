@@ -59,6 +59,84 @@
   font-family: "Varela Round", sans-serif;
 }
 
+.aboutBioEdit {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.aboutBioTextarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-family: "Varela Round", sans-serif;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.7;
+  color: #555;
+}
+
+.aboutBioTextarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.aboutBioActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.aboutBioSave,
+.aboutBioCancel {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.aboutBioSave {
+  background-color: #007bff;
+  color: white;
+}
+
+.aboutBioSave:hover {
+  background-color: #0056b3;
+}
+
+.aboutBioCancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.aboutBioCancel:hover {
+  background-color: #5a6268;
+}
+
+.aboutBioEditBtn {
+  margin-top: 10px;
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.aboutBioEditBtn:hover {
+  background-color: #0056b3;
+}
+
 .aboutPosts {
   display: flex;
   flex-wrap: wrap;

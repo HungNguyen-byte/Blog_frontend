@@ -13,6 +13,7 @@ const normalizeUser = (backendUser, token, existingUser = null) => ({
   username: backendUser.username,
   email: backendUser.email,
   profilePic: backendUser.profilePic || "",
+  bio: backendUser.bio || existingUser?.bio || "",
   isAdmin: 
     backendUser.isAdmin ?? 
     backendUser.isadmin ?? 
