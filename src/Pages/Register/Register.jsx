@@ -33,6 +33,7 @@ export default function Register() {
             <form className="registerForm" onSubmit={handleSubmit}>
                 <label>Username</label>
                 <input
+                    className="registerInput"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -41,6 +42,7 @@ export default function Register() {
                 />
                 <label>Email</label>
                 <input
+                    className="registerInput"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -48,6 +50,7 @@ export default function Register() {
                 />
                 <label>Password</label>
                 <input
+                    className="registerInput"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

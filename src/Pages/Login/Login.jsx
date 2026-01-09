@@ -33,6 +33,7 @@ export default function Login() {
             <form className="loginForm" onSubmit={handleSubmit}>
                 <label>Username</label>
                 <input
+                    className="loginInput"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -41,6 +42,7 @@ export default function Login() {
                 />
                 <label>Password</label>
                 <input
+                    className="loginInput"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
