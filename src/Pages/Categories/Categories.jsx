@@ -69,8 +69,9 @@ export default function Categories() {
         const trimmed = newCat.trim();
         if (!trimmed) return;
 
+        // Check if category already exists (case-insensitive) before executing
         if (cats.some(c => c.name.toLowerCase() === trimmed.toLowerCase())) {
-            setError("Category already exists");
+            setError("The category has already existed.");
             return;
         }
 
@@ -82,7 +83,16 @@ export default function Categories() {
             setNewCat("");
             fetchCategories();
         } catch (err) {
-            setError("Failed to create category");
+            // Handle backend validation error or other errors
+            const errorMessage = err.response?.data || err.message || "";
+            if (errorMessage === "The category has already existed." ||
+                errorMessage === "Category already exists" ||
+                errorMessage.includes("already existed") ||
+                errorMessage.includes("already exists")) {
+                setError("The category has already existed.");
+            } else {
+                setError("Failed to create category");
+            }
         } finally {
             setLoading(false);
         }
