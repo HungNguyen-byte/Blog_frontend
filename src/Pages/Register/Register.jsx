@@ -2,6 +2,7 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import API from "../../api";
 import './register.css'
 
 export default function Register() {
@@ -18,9 +19,32 @@ export default function Register() {
         setLoading(true);
 
         try {
+            // Check if username already exists before registration
+            try {
+                const checkRes = await API.get(`/users/check-username?username=${encodeURIComponent(username)}`);
+                if (checkRes.data === true) {
+                    setError("The username has already existed");
+                    setLoading(false);
+                    return;
+                }
+            } catch (checkErr) {
+                // If check endpoint fails, continue with registration (backend will validate)
+                // But if it's a 400/error indicating username exists, stop here
+                if (checkErr.response?.data === true) {
+                    setError("The username has already existed");
+                    setLoading(false);
+                    return;
+                }
+            }
+
             await register(username, email, password);
         } catch (err) {
-            setError(err.message);
+            // Handle registration error
+            if (err.response?.data === "Username already exists" || err.message === "Username already exists") {
+                setError("The username has already existed");
+            } else {
+                setError(err.response?.data || err.message || "Registration failed");
+            }
         } finally {
             setLoading(false);
         }

@@ -59,6 +59,26 @@ export default function Settings() {
     setLoading(true);
 
     try {
+      // Check if username has changed and if new username already exists
+      if (username !== user.username && username.trim()) {
+        try {
+          const checkRes = await API.get(`/users/check-username?username=${encodeURIComponent(username)}&excludeUserId=${encodeURIComponent(user.id)}`);
+          if (checkRes.data === true) {
+            setError("The username has already existed");
+            setLoading(false);
+            return;
+          }
+        } catch (checkErr) {
+          // If check endpoint fails, continue with update (backend will validate)
+          // But if it's an error indicating username exists, stop here
+          if (checkErr.response?.data === true) {
+            setError("The username has already existed");
+            setLoading(false);
+            return;
+          }
+        }
+      }
+
       // 1. Upload image if changed
       const profilePicUrl = await uploadImage();
 
@@ -90,7 +110,14 @@ export default function Settings() {
       }
 
     } catch (err) {
-      setError(err.response?.data || "Update failed!");
+      // Handle update error
+      if (err.response?.data === "The username has already existed" || 
+          err.message === "The username has already existed" ||
+          err.response?.data?.includes("username already exists")) {
+        setError("The username has already existed");
+      } else {
+        setError(err.response?.data || err.message || "Update failed!");
+      }
     } finally {
       setLoading(false);
     }
